@@ -4,9 +4,7 @@
 package com.labs.dm.restful.service;
 
 import com.labs.dm.restful.domain.Book;
-import java.util.ArrayList;
-import java.util.List;
-import javax.ws.rs.Consumes;
+import com.labs.dm.restful.domain.Books;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -20,22 +18,20 @@ import javax.ws.rs.core.Response;
 public class BookService {
 
     @GET
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response list() {
-        List<Book> list = new ArrayList<Book>();
-        list.add(new Book("Nineteen Eighty-Four", "Orwell", 1949));
-        list.add(new Book("Thinking In Java", "Bruce Eckel", 2000));
-        return Response.ok().entity(list).build();
+        Books books = new Books();
+        books.setName("foo");
+        books.getBooks().add(new Book("Nineteen Eighty-Four", "Orwell", 1949));
+        books.getBooks().add(new Book("Thinking In Java", "Bruce Eckel", 2000));
+        return Response.ok().entity(books).build();
     }
 
     @GET
-    @Consumes(MediaType.APPLICATION_XML)
-    @Produces(MediaType.APPLICATION_XML)
-    public Response listXml() {
-        List<Book> list = new ArrayList<Book>();
-        list.add(new Book("Nineteen Eighty-Four", "Orwell", 1949));
-        list.add(new Book("Thinking In Java", "Bruce Eckel", 2000));
-        return Response.ok().entity(list).build();
+    @Path("{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getById() {
+        Book book = new Book("Nineteen Eighty-Four", "Orwell", 1949);
+        return Response.ok().entity(book).build();
     }
 }
